@@ -28,6 +28,25 @@ La solución se apoya íntegramente en los servicios de **Amazon Web Services (A
 
 ---
 
+   graph LR
+    subgraph "Capa de Computación (EC2)"
+        A[Script de Backup / Cron Job] -- "1. Genera .sql y sube" --> B
+    end
+
+    subgraph "Capa de Almacenamiento y Eventos (AWS)"
+        B[(Amazon S3 Bucket)] -- "2. Evento: ObjectCreated" --> C(AWS Lambda)
+        C -- "3. Procesa y Valida" --> D[Amazon SNS]
+    end
+
+    subgraph "Notificaciones"
+        D -- "4. Alerta de Éxito/Error" --> E{Administrador}
+    end
+
+    style B fill:#f96,stroke:#333,stroke-width:2px
+    style C fill:#69f,stroke:#333,stroke-width:2px
+    style D fill:#f66,stroke:#333,stroke-width:2px
+
+
 ## 🔐 Seguridad y Administración
 Como administrador del sistema, implementé las siguientes mejoras de seguridad y eficiencia:
 - **Backup Automation:** Implementación de `cron jobs` para copias de seguridad diarias en **S3**.
