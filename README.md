@@ -14,11 +14,16 @@ La solución se apoya íntegramente en los servicios de **Amazon Web Services (A
 
 
 ### Servicios Utilizados:
-* **Computación & Escalabilidad:** EC2 con **Auto Scaling Group** y **Application Load Balancer (ALB)** para gestionar picos de tráfico.
-* **Base de Datos:** **AWS RDS (MySQL)** para la aplicación principal y MySQL en EC2 para WordPress.
-* **Automatización:** **CloudFormation** (Infraestructura como Código) y **AWS Lambda** para tareas programadas.
-* **Seguridad:** VPC con subredes públicas/privadas y **Security Groups** configurados bajo el principio de menor privilegio.
-* **Monitorización:** **CloudWatch** y **SNS** para alertas en tiempo real.
+Servicio AWS	Categoría	Función en el Proyecto
+VPC	Networking	Segmentación de red con subredes públicas y privadas.
+EC2	Computación	Hosting de la aplicación PHP y WordPress (Glosario).
+ALB & ASG	Escalabilidad	Balanceador de carga y auto-escalado para alta disponibilidad.
+RDS (MySQL)	Base de Datos	Base de Datos relacional gestionada para la app principal.
+S3	Almacenamiento	Destino de backups diarios automatizados via cron.
+Lambda	Automatización	Ejecución de tareas serverless (Python).
+CloudFormation	IaC	Despliegue automatizado de la infraestructura mediante YAML.
+SNS	Mensajería	Sistema de alertas y notificaciones.
+CloudWatch	Monitorización	Observabilidad y registro de logs del sistema.
 
 ---
 
