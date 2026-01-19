@@ -13,17 +13,18 @@ La solución se apoya íntegramente en los servicios de **Amazon Web Services (A
 
 
 
-### Servicios Utilizados:
-Servicio AWS	Categoría	Función en el Proyecto
-VPC	Networking	Segmentación de red con subredes públicas y privadas.
-EC2	Computación	Hosting de la aplicación PHP y WordPress (Glosario).
-ALB & ASG	Escalabilidad	Balanceador de carga y auto-escalado para alta disponibilidad.
-RDS (MySQL)	Base de Datos	Base de Datos relacional gestionada para la app principal.
-S3	Almacenamiento	Destino de backups diarios automatizados via cron.
-Lambda	Automatización	Ejecución de tareas serverless (Python).
-CloudFormation	IaC	Despliegue automatizado de la infraestructura mediante YAML.
-SNS	Mensajería	Sistema de alertas y notificaciones.
-CloudWatch	Monitorización	Observabilidad y registro de logs del sistema.
+
+| Servicio AWS | Categoría | Función en el Proyecto |
+| :--- | :--- | :--- |
+| **VPC** | Networking | Segmentación de red con subredes públicas y privadas. |
+| **EC2** | Computación | Hosting de la aplicación PHP y WordPress (Glosario). |
+| **ALB & ASG** | Escalabilidad | Balanceador de carga y auto-escalado para alta disponibilidad. |
+| **RDS (MySQL)** | Base de Datos | Base de Datos relacional gestionada para la app principal. |
+| **S3** | Almacenamiento | Destino de backups diarios automatizados vía cron. |
+| **Lambda** | Automatización | Ejecución de código sin servidores para tareas programadas. |
+| **CloudFormation** | IaC | Despliegue automático de recursos mediante plantillas YAML. |
+| **SNS** | Mensajería | Servicio sencillo de notificaciones y alertas. |
+| **CloudWatch** | Monitorización | Monitorización y observabilidad de todo el sistema cloud. |
 
 ---
 
