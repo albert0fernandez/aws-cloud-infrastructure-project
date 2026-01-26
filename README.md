@@ -71,12 +71,7 @@ Uno de los pilares del proyecto fue minimizar el gasto operativo.
 
 ---
 
-## 👥 Equipo (ASIR2)
-- **Alberto Fernández Baeza** - *Administración de Infraestructura & AWS*
-- Nicolás Bedia García
-- Juan Boo Ruiz
-- Raúl Fraile Gándara
-- Adrián Romo Oria
+
 
 ---
 *Este proyecto es una demostración de competencias en administración de sistemas y arquitectura cloud.*
