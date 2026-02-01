@@ -71,7 +71,7 @@ Lógica de notificación: el script de python procesa el evento y utiliza sns (s
 
 ventaja técnica: este modelo elimina la necesidad de tener un servidor encendido solo para vigilar los backups, reduciendo costes y mejorando la eficiencia del sistema.
 
-<img src="notification.png" alt="Lambda width="650"> 
+<img src="/notification.png" alt="Captura Lambda" width="650">
 
 El administrador tendra constantemente feedback mediante SNS de los backups asignados.
 
