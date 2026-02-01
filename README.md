@@ -107,7 +107,7 @@ El proyecto ha sido diseñado para operar dentro del **AWS Free Tier** durante l
 ---
 
 ------
-##  Monitorización y alertas (cloudwatch)
+##  Monitorización y alertas (Cloudwatch)
 
   <img src="CloudWatch.png" alt="CloudWatch" width="650">
 
