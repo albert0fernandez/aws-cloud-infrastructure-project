@@ -35,7 +35,7 @@ Grupos de destino
 Sustitución automática de instancias en caso de fallo\
 
 
-<img src="Reto_G2_AplicacionPHP.png" alt="App PHP Academia" width="500"><table align="center">
+
   <tr>
     <td align="center">
       <img src="Reto_G2_AplicacionPHP.png" alt="App PHP" width="400">
