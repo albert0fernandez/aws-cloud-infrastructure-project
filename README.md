@@ -6,11 +6,19 @@
 
 Este proyecto consiste en el diseño e implementación de una infraestructura en la nube para una academia de pintura, priorizando la **alta disponibilidad (24/7)**, la **seguridad** y la **optimización de costes**. Desarrollado como parte del reto **RetaCantabria 2025/2026**.
 
----
-<img src="https://cdn.jsdelivr.net/gh/boyney123/awsicons/src/icons/VirtualPrivateCloud.svg" width="40">VPCNetworkingSegmentación de red con subredes públicas y privadas.<img src="https://cdn.jsdelivr.net/gh/boyney123/awsicons/src/icons/Ec2.svg" width="40">EC2ComputaciónHosting de la aplicación PHP y WordPress (Glosario).<img src="https://cdn.jsdelivr.net/gh/boyney123/awsicons/src/icons/ElasticLoadBalancingApplicationLoadBalancer.svg" width="40">ALB & ASGEscalabilidadBalanceador de carga y auto-escalado para alta disponibilidad.<img src="https://cdn.jsdelivr.net/gh/boyney123/awsicons/src/icons/Rds.svg" width="40">RDS (MySQL)Base de DatosBase de Datos relacional gestionada para la app principal.<img src="https://cdn.jsdelivr.net/gh/boyney123/awsicons/src/icons/SimpleStorageServiceStandard.svg" width="40">S3AlmacenamientoDestino de backups diarios automatizados vía cron.<img src="https://cdn.jsdelivr.net/gh/boyney123/awsicons/src/icons/Lambda.svg" width="40">LambdaAutomatizaciónEjecución de código sin servidores para tareas programadas.<img src="https://cdn.jsdelivr.net/gh/boyney123/awsicons/src/icons/CloudFormation.svg" width="40">CloudFormationIaCDespliegue automático de recursos mediante plantillas YAML.<img src="https://cdn.jsdelivr.net/gh/boyney123/awsicons/src/icons/SimpleNotificationService.svg" width="40">SNSMensajeríaServicio sencillo de notificaciones y alertas.<img src="https://cdn.jsdelivr.net/gh/boyney123/awsicons/src/icons/CloudWatch.svg" width="40">CloudWatchMonitorizaciónMonitorización y observabilidad de todo el sistema cloud.
-Auto Scaling Group
-Grupos de destino
-Sustitución automática de instancias en caso de fallo\
+## 🏗️ Inventario de Recursos Cloud
+
+| Icono | Servicio AWS | Categoría | Función en el Proyecto |
+| :---: | :--- | :--- | :--- |
+| <img src="https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/master/dist/Networking/VPC.png" width="30"> | **VPC** | Networking | Segmentación de red con subredes públicas y privadas. |
+| <img src="https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/master/dist/Compute/EC2.png" width="30"> | **EC2** | Computación | Hosting de la aplicación PHP y WordPress (Glosario). |
+| <img src="https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/master/dist/Networking/ELBApplicationLoadBalancer.png" width="30"> | **ALB & ASG** | Escalabilidad | Balanceador de carga y auto-escalado para alta disponibilidad. |
+| <img src="https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/master/dist/Database/RDS.png" width="30"> | **RDS (MySQL)** | Base de Datos | Base de Datos relacional gestionada para la app principal. |
+| <img src="https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/master/dist/Storage/SimpleStorageService.png" width="30"> | **S3** | Almacenamiento | Destino de backups diarios automatizados vía cron. |
+| <img src="https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/master/dist/Compute/Lambda.png" width="30"> | **Lambda** | Automatización | Ejecución de código sin servidores para tareas programadas. |
+| <img src="https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/master/dist/ManagementGovernance/CloudFormation.png" width="30"> | **CloudFormation** | IaC | Despliegue automático de recursos mediante plantillas YAML. |
+| <img src="https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/master/dist/ApplicationIntegration/SimpleNotificationService.png" width="30"> | **SNS** | Mensajería | Servicio sencillo de notificaciones y alertas. |
+| <img src="https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/master/dist/ManagementGovernance/CloudWatch.png" width="30"> | **CloudWatch** | Monitorización | Monitorización y observabilidad de todo el sistema cloud. |
 
 
 
