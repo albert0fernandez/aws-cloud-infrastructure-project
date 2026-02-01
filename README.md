@@ -86,9 +86,8 @@ Como administrador del sistema, implementé las siguientes mejoras de seguridad 
 
 La arquitectura se ha automatizado íntegramente mediante cloudformation para asegurar un despliegue replicable y eficiente, eliminando errores manuales en la configuración de red y datos. el proyecto se organiza en dos plantillas principales ubicadas en la carpeta de infraestructura:
 
-➡️ IaC_Script_VPC_EC2_RDS.yaml – gestiona la vpc dualstack y el aprovisionamiento de rds con soporte específico para triggers mysql.
-
-➡️ IaC_Script_VPC_EC2_WordPress.yaml – orquesta el despliegue de las instancias ec2 y la configuración del entorno para wordpress.
+**➡️ [IaC_Script_VPC_EC2_RDS.yaml](Infrastructure%20as%20Code/IaC_Script_VPC_EC2_RDS.yaml)**: gestiona la **VPC dualstack** y el aprovisionamiento de **RDS** con soporte específico para **triggers MySQL**.
+* **➡️ [IaC_Script_VPC_EC2_WordPress.yaml](Infrastructure%20as%20Code/IaC_Script_VPC_EC2_WordPress.yaml)**: orquesta el despliegue de las instancias **EC2** y la configuración del entorno para **WordPress**.
 ---
 ### Análisis de Costes (FinOps)
 
