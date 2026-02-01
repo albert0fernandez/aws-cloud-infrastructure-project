@@ -85,8 +85,9 @@ Como administrador del sistema, implementé las siguientes mejoras de seguridad 
 ## Análisis de Costes (FinOps)
 El proyecto ha sido diseñado para operar dentro del **AWS Free Tier** durante la fase de desarrollo. 
 - **Right-sizing:** Uso de instancias de la familia `t3` (arquitectura Nitro).
-- **Monitorizacion : Monitorizacion mediante ClodWatch
+- **Monitorizacion: Monitorizacion mediante ClodWatch
 - **Políticas de S3:** Ciclo de vida para transicionar backups antiguos a *Glacier* y minimizar costes de almacenamiento persistente.
+- **Optimizacion de costes: Para consultar el análisis financiero detallado <a href="Reto_G2_Costes.pdf"> <img src="https://img.shields.io/badge/click_aquí-abrir_presupuesto_pdf-ff9900?style=for-the-badge&logo=adobe-acrobat-reader&logoColor=white" alt="Presupuesto PDF"> </a>
 
 
 Para consultar el análisis financiero detallado:
