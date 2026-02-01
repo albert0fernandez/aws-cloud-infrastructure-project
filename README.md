@@ -38,12 +38,12 @@ La arquitectura de red sigue una segmentación estricta para proteger los recurs
     <td align="center">
       <img src="Reto_G2_AplicacionPHP.png" alt="App PHP" width="450">
       <br>
-      <sub><b>Interfaz Aplicación PHP</b></sub>
+      <sub><b>Interfaz Red </b></sub>
     </td>
     <td align="center">
       <img src="Reto_G2_WordPress.png" alt="WordPress" width="450">
       <br>
-      <sub><b>Glosario WordPress</b></sub>
+      <sub><b>Interfaz Web Estatica WordPress</b></sub>
     </td>
   </tr>
 </table>
