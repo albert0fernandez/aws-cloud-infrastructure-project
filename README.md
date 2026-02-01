@@ -60,7 +60,7 @@ No solo almacenamos datos, los gestionamos eficientemente:
     3. Notificación **SNS** al administrador sobre el estado de la copia.
   
   
-## 🔐Automatización serverless (Lambda  SNS )
+## Automatización serverless (Lambda  SNS )
 
  
  <img src="/lambda.png" alt="Captura Lambda" width="650">
@@ -75,14 +75,14 @@ ventaja técnica: este modelo elimina la necesidad de tener un servidor encendid
 
 El administrador tendra constantemente feedback mediante SNS de los backups asignados.
 
-## 🔐 Seguridad y Administración
+##  Seguridad y Administración
 Como administrador del sistema, implementé las siguientes mejoras de seguridad y eficiencia:
 - **Backup Automation:** Implementación de `cron jobs` para copias de seguridad diarias en **S3**.
 - **Acceso Seguro:** Gestión de accesos mediante claves SSH personalizadas y despliegue de firewall mediante Grupos de Seguridad.
 - **Base de Datos Robusta:** Uso de **Triggers** para el archivado automático de registros (`_archivadas`), garantizando la integridad de los datos históricos.
 
 ---
-## 📈 Análisis de Costes (FinOps)
+## Análisis de Costes (FinOps)
 El proyecto ha sido diseñado para operar dentro del **AWS Free Tier** durante la fase de desarrollo. 
 - **Right-sizing:** Uso de instancias de la familia `t3` (arquitectura Nitro).
 - **Monitorizacion : Monitorizacion mediante ClodWatch
@@ -95,7 +95,7 @@ Para consultar el análisis financiero detallado:
 ---
 
 ---
-## 📈   Monitorización y alertas (cloudwatch)
+##  Monitorización y alertas (cloudwatch)
 
   <img src="CloudWatch.png" alt="CloudWatch" width="650">
 
