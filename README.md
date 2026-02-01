@@ -36,20 +36,20 @@ Sustitución automática de instancias en caso de fallo\
 
 
 
+<table align="center">
   <tr>
     <td align="center">
-      <img src="Reto_G2_AplicacionPHP.png" alt="App PHP" width="400">
+      <img src="Reto_G2_AplicacionPHP.png" alt="App PHP" width="450">
       <br>
       <sub><b>Interfaz Aplicación PHP</b></sub>
     </td>
     <td align="center">
-      <img src="Reto_G2_WordPress.png" alt="WordPress" width="400">
+      <img src="Reto_G2_WordPress.png" alt="WordPress" width="450">
       <br>
       <sub><b>Glosario WordPress</b></sub>
     </td>
   </tr>
 </table>
-
 
 ## 🔐 Seguridad y Administración
 Como administrador del sistema, implementé las siguientes mejoras de seguridad y eficiencia:
