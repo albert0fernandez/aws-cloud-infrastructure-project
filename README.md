@@ -63,7 +63,7 @@ No solo almacenamos datos, los gestionamos eficientemente:
 ## 🔐Automatización serverless (Lambda  SNS )
 
  
- <img src="assets/lambda.png" alt="Captura Lambda" width="650">
+ <img src="/lambda.png" alt="Captura Lambda" width="650">
  
 Disparador (trigger): la función lambda se activa automáticamente cada vez que se detecta un nuevo archivo de backup en el bucket de s3.
 
