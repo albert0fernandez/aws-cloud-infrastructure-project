@@ -12,7 +12,7 @@ Este proyecto consiste en el diseño e implementación de una infraestructura en
 | :---: | :--- | :--- | :--- |
 | <img src="assets/vpc.png" width="30"> | **VPC** | Networking | Segmentación de red con subredes públicas y privadas. |
 | <img src="https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/main/dist/Compute/EC2.png" width="30"> | **EC2** | Computación | Hosting de la aplicación PHP y WordPress (Glosario). |
-| <img src="assets/elb.png" width="30"> | **ELB & ASG** | Escalabilidad | Balanceador de carga y auto-escalado para alta disponibilidad. |
+| <img src="assets/ELB.png" width="30"> | **ELB & ASG** | Escalabilidad | Balanceador de carga y auto-escalado para alta disponibilidad. |
 | <img src="https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/main/dist/Database/RDS.png" width="30"> | **RDS (MySQL)** | Base de Datos | Base de Datos relacional gestionada para la app principal. |
 | <img src="https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/main/dist/Storage/SimpleStorageService.png" width="30"> | **S3** | Almacenamiento | Destino de backups diarios automatizados vía cron. |
 | <img src="https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/main/dist/Compute/Lambda.png" width="30"> | **Lambda** | Automatización | Ejecución de código sin servidores para tareas programadas. |
