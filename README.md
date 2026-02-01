@@ -99,14 +99,12 @@ El proyecto ha sido diseñado para operar dentro del **AWS Free Tier** durante l
 * **Políticas de S3:** Ciclo de vida para transicionar backups antiguos a **Glacier** y minimizar costes de almacenamiento persistente.
 * **Optimización de costes:** Para consultar el análisis financiero detallado:
 
-➡️ <a href="Reto_G2_Costes.pdf">
+ <a href="Reto_G2_Costes.pdf">
   <img src="https://img.shields.io/badge/CLICK_AQUÍ-ABRIR_PRESUPUESTO_PDF-ff9900?style=for-the-badge&logo=adobe-acrobat-reader&logoColor=white" alt="Presupuesto PDF">
 </a>
 
 
-Para consultar el análisis financiero detallado:
 
-<a href="Reto_G2_Costes.pdf"> <img src="https://img.shields.io/badge/click_aquí-abrir_presupuesto_pdf-ff9900?style=for-the-badge&logo=adobe-acrobat-reader&logoColor=white" alt="Presupuesto PDF"> </a>
 ---
 
 ------
