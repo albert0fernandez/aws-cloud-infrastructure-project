@@ -10,7 +10,7 @@
 Este proyecto nace bajo el marco del reto RetaCantabria 2025, con el objetivo de diseñar y desplegar una infraestructura Cloud robusta para una Academia de Pintura. La solución no es simplemente una migración al buscador, sino una arquitectura diseñada bajo los principios de Alta Disponibilidad, Escalabilidad y Seguridad Perimetral.
 
 Utilizando Infraestructura como Código (IaC) mediante CloudFormation, se ha orquestado un entorno DualStack (IPv4/IPv6) que integra servicios de computación elástica (EC2/ASG), bases de datos gestionadas (RDS con soporte para Triggers) y una capa de automatización Serverless (Lambda/SNS) para la gestión inteligente de backups.
----
+
 
 ## 🏗️ Recursos de AWS Utilizados 
 
@@ -26,6 +26,7 @@ Utilizando Infraestructura como Código (IaC) mediante CloudFormation, se ha orq
 | <img src="https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/main/dist/ApplicationIntegration/SimpleNotificationService.png" width="30"> | **SNS** | Mensajería | Servicio sencillo de notificaciones y alertas. |
 | <img src="https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/main/dist/ManagementGovernance/CloudWatch.png" width="30"> | **CloudWatch** | Monitorización | Monitorización y observabilidad de todo el sistema cloud. |
 
+---
 La arquitectura de red sigue una segmentación estricta para proteger los recursos sensibles aqui esta mi estructura:
 
 * Subredes públicas: en esta capa residen el balanceador de carga (alb) y los puntos de acceso a internet (igw), gestionando la entrada de tráfico de los usuarios.
@@ -33,7 +34,7 @@ La arquitectura de red sigue una segmentación estricta para proteger los recurs
 * Subredes privadas: es el entorno seguro donde se alojan las instancias ec2 y la base de datos rds, quedando totalmente aisladas del acceso directo desde internet.
 
 * Security groups: he configurado reglas de cortafuegos a medida para permitir únicamente el tráfico necesario, abriendo los puertos 80 y 443 para la navegación web y el puerto 3306 para las comunicaciones internas de la base de datos mysql.
----
+
 
 <table align="center">
   <tr>
@@ -49,7 +50,7 @@ La arquitectura de red sigue una segmentación estricta para proteger los recurs
     </td>
   </tr>
 </table>
----
+
 
 ## Base de datos gestionada (RDS)
 
