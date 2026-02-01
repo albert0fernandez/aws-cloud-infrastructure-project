@@ -1,0 +1,341 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: VPC DualStack (IPv4 e IPv6) con EC2 en subred publica y RDS con MySQL y BBDD del reto.
+
+# Parametros: para identificar la AMI de Ubuntu (o usar una preparada con un userdata y en funcionamiento creada) y para introducir al crear RDS la contraseña deseada para la BD
+Parameters:
+  AMICreadaReto:
+    Type: AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>
+    Default: /aws/service/canonical/ubuntu/server/24.04/stable/current/amd64/hvm/ebs-gp3/ami-id
+  DBPassword:
+    Type: String
+    NoEcho: true
+
+# Recursos: aqui se encontraran todos los recursos a crear en la plantilla
+Resources:
+  # VPC (con red 10.2.0.0/16 e IPv6), identificada con mi nombre usando Tags.
+  VPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.2.0.0/16
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      Tags:
+        - Key: Name
+          Value: VPC-Reto-Grupo2-IaC
+
+  # IPv6 de la VPC, asignando Amazon de manera automatica un bloque
+  IPv6Block:
+    Type: AWS::EC2::VPCCidrBlock
+    Properties:
+      VpcId: !Ref VPC
+      AmazonProvidedIpv6CidrBlock: true
+
+  # Configuracion de IGW e EIGW
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+
+  AttachIGW:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref VPC
+      InternetGatewayId: !Ref InternetGateway
+
+  EgressOnlyIGW:
+    Type: AWS::EC2::EgressOnlyInternetGateway
+    Properties:
+      VpcId: !Ref VPC
+
+  # Subredes publicas (3), en zonas de disponibilidad diferentes, con IPv6 asignado dentro del rango usando en la VPC para la subred, activando IPv4 e IPv6
+  PublicSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      AvailabilityZone: !Select [0, !GetAZs ""]
+      CidrBlock: 10.2.0.0/24
+      AssignIpv6AddressOnCreation: true
+      MapPublicIpOnLaunch: true
+      Ipv6CidrBlock:
+        !Select [0, !Cidr [!Select [0, !GetAtt VPC.Ipv6CidrBlocks], 256, 64]]
+
+  PublicSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      AvailabilityZone: !Select [1, !GetAZs ""]
+      CidrBlock: 10.2.1.0/24
+      AssignIpv6AddressOnCreation: true
+      MapPublicIpOnLaunch: true
+      Ipv6CidrBlock:
+        !Select [1, !Cidr [!Select [0, !GetAtt VPC.Ipv6CidrBlocks], 256, 64]]
+
+  PublicSubnet3:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      AvailabilityZone: !Select [2, !GetAZs ""]
+      CidrBlock: 10.2.2.0/24
+      AssignIpv6AddressOnCreation: true
+      MapPublicIpOnLaunch: true
+      Ipv6CidrBlock:
+        !Select [2, !Cidr [!Select [0, !GetAtt VPC.Ipv6CidrBlocks], 256, 64]]
+
+  # Subredes privadas (3), en zonas de disponibilidad diferentes, con IPv6 asignado dentro del rango usando en la VPC para la subred, activando IPv4 e IPv6
+  PrivateSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      AvailabilityZone: !Select [0, !GetAZs ""]
+      CidrBlock: 10.2.3.0/24
+      AssignIpv6AddressOnCreation: true
+      Ipv6CidrBlock:
+        !Select [3, !Cidr [!Select [0, !GetAtt VPC.Ipv6CidrBlocks], 256, 64]]
+
+  PrivateSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      AvailabilityZone: !Select [1, !GetAZs ""]
+      CidrBlock: 10.2.4.0/24
+      AssignIpv6AddressOnCreation: true
+      Ipv6CidrBlock:
+        !Select [4, !Cidr [!Select [0, !GetAtt VPC.Ipv6CidrBlocks], 256, 64]]
+
+  PrivateSubnet3:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      AvailabilityZone: !Select [2, !GetAZs ""]
+      CidrBlock: 10.2.5.0/24
+      AssignIpv6AddressOnCreation: true
+      Ipv6CidrBlock:
+        !Select [5, !Cidr [!Select [0, !GetAtt VPC.Ipv6CidrBlocks], 256, 64]]
+
+  # Tablas de enrutamiento publica y privadas, y asignaciones a las subredes
+  PublicRT:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC
+
+  PublicRouteIPv4:
+    Type: AWS::EC2::Route
+    DependsOn: AttachIGW
+    Properties:
+      RouteTableId: !Ref PublicRT
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway
+
+  PublicRouteIPv6:
+    Type: AWS::EC2::Route
+    DependsOn: AttachIGW
+    Properties:
+      RouteTableId: !Ref PublicRT
+      DestinationIpv6CidrBlock: ::/0
+      GatewayId: !Ref InternetGateway
+
+  PublicSubnet1RT:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnet1
+      RouteTableId: !Ref PublicRT
+
+  PublicSubnet2RT:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnet2
+      RouteTableId: !Ref PublicRT
+
+  PublicSubnet3RT:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnet3
+      RouteTableId: !Ref PublicRT
+
+  PrivateRT:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC
+
+  PrivateIPv6Route:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref PrivateRT
+      DestinationIpv6CidrBlock: ::/0
+      EgressOnlyInternetGatewayId: !Ref EgressOnlyIGW
+
+  PrivateSubnet1RT:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PrivateSubnet1
+      RouteTableId: !Ref PrivateRT
+
+  PrivateSubnet2RT:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PrivateSubnet2
+      RouteTableId: !Ref PrivateRT
+
+  PrivateSubnet3RT:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PrivateSubnet3
+      RouteTableId: !Ref PrivateRT
+
+
+  # Grupos de seguridad, uno creado para la EC2, el otro creado para el acceso de MySQL a traves de la EC2, ambos con su descripcion
+  WebSG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Web-SG-Reto-IaC
+      VpcId: !Ref VPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 3306
+          ToPort: 3306
+          CidrIp: 10.2.0.0/24
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIpv6: ::/0
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIpv6: ::/0
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIpv6: ::/0
+        - IpProtocol: tcp
+          FromPort: 3306
+          ToPort: 3306
+          CidrIpv6: ::/0 
+
+  RDSSG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: RDS-SG-Reto-IaC
+      VpcId: !Ref VPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 3306
+          ToPort: 3306
+          SourceSecurityGroupId: !Ref WebSG
+
+  # Instancia EC2 creada con la AMI especificada arriba, usando el grupo de seguridad creado, en la subred publica 1, usando un userdata (similar al del reto) que instala los paquetes necesarios,
+  # copia las claves necesarias y clona un repositorio (el del reto, por eso tengo ahi esa clave aparentemente de Nicolas), espera a que se cree el RDS y después crea las tablas y añade inserts
+  # a las tablas, modificando las constantes para conectarse al RDS en vez de a la base de datos en local en la instancia.
+  WebEC2:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t3.micro
+      ImageId: !Ref AMICreadaReto
+      SubnetId: !Ref PublicSubnet1
+      KeyName: vockey
+      SecurityGroupIds:
+        - !Ref WebSG
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          DB_HOST="${MyRDS.Endpoint.Address}"
+          DB_PASS="${DBPassword}"
+
+          apt update -y
+          apt install -y apache2 mysql-client php libapache2-mod-php php-mysql php-curl php-gd php-intl php-xmlrpc php-xml php-ldap php-zip php-soap git
+
+          systemctl enable apache2
+          systemctl start apache2
+
+          cd /var/www/html
+          rm -f index.html
+
+          mkdir -p /root/.ssh
+          chmod 700 /root/.ssh
+
+          echo -e "-----BEGIN OPENSSH PRIVATE KEY-----\nb3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW\nQyNTUxOQAAACCi3MU9WFAM0lxppAltPE+5xZfBk43CkE8ksj2YGdKDFAAAAKAHiRkgB4kZ\nIAAAAAtzc2gtZWQyNTUxOQAAACCi3MU9WFAM0lxppAltPE+5xZfBk43CkE8ksj2YGdKDFA\nAAAECToL69o4L6WkKhdo2sh8HoM8GkGiSRInFyk0HtkgDvmKLcxT1YUAzSXGmkCW08T7nF\nl8GTjcKQTySyPZgZ0oMUAAAAGW5iZWRpYWcwMUBlZHVjYW50YWJyaWEuZXMBAgME\n-----END OPENSSH PRIVATE KEY-----" > /root/.ssh/id_ed25519
+
+          chmod 400 /root/.ssh/id_ed25519
+
+          echo "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKLcxT1YUAzSXGmkCW08T7nFl8GTjcKQTySyPZgZ0oMU nbediag01@educantabria.es" > /root/.ssh/id_ed25519.pub
+
+
+          ssh-keyscan github.com >> /root/.ssh/known_hosts
+
+          git clone git@github.com:IESAlisal/2025RetaCantabriaASIR2Grupo2.git .
+          git config --global --add safe.directory /var/www/html
+          chown -R ubuntu:ubuntu /var/www/html
+
+          echo "Esperando a RDS..."
+          until mysql -h "$DB_HOST" -u admin -p"$DB_PASS" -e "SELECT 1;" >/dev/null 2>&1; do
+            sleep 10
+          done
+
+          echo "Creando tablas..."
+          mysql -h "$DB_HOST" -u admin -p"$DB_PASS" < /var/www/html/bbdd/bbdd_creaciontablas.sql
+
+          echo "Insertando datos..."
+          mysql -h "$DB_HOST" -u admin -p"$DB_PASS" < /var/www/html/bbdd/bbdd_inserts.sql
+
+          echo "Creando triggers..."
+          mysql -h "$DB_HOST" -u admin -p"$DB_PASS" < /var/www/html/bbdd/bbdd_triggers.sql
+
+          sed -i "s/define(\"HOST\",.*/define(\"HOST\", \"$DB_HOST\");/" /var/www/html/funciones/constantes.php
+          sed -i "s/define(\"USER\",.*/define(\"USER\", \"admin\");/" /var/www/html/funciones/constantes.php
+          sed -i "s/define(\"PASSWORD\",.*/define(\"PASSWORD\", \"$DB_PASS\");/" /var/www/html/funciones/constantes.php
+          sed -i "s/define(\"DATABASE\",.*/define(\"DATABASE\", \"pintura02\");/" /var/www/html/funciones/constantes.php
+
+          curl -o session-manager-plugin.deb https://s3.amazonaws.com/session-manager-downloads/plugin/latest/ubuntu_64bit/session-manager-plugin.deb
+
+          dpkg -i session-manager-plugin.deb
+          session-manager-plugin
+          cat /var/log/cloud-init-output.log
+
+  # Creacion del RDS en las subredes privadas usando de nombre de bases de datos "pintura02" en el grupo de subredes privadas creado
+  RDSSubnetGroup:
+    Type: AWS::RDS::DBSubnetGroup
+    Properties:
+      DBSubnetGroupDescription: Subredes privadas RDS
+      SubnetIds:
+        - !Ref PrivateSubnet1
+        - !Ref PrivateSubnet2
+        - !Ref PrivateSubnet3
+
+  # Grupo de parámetros que permite habilitar la creación de Triggers
+  RDSParamGroupTriggers:
+    Type: AWS::RDS::DBParameterGroup
+    DeletionPolicy: "Delete"
+    Properties:
+      Description: Soporte de Triggers en RDS
+      Family: mysql8.0
+      Parameters:
+        log_bin_trust_function_creators: "1"
+
+  MyRDS:
+    Type: AWS::RDS::DBInstance
+    DeletionPolicy: "Delete"
+    Properties:
+      DBInstanceIdentifier: pintura02  
+      DBName: pintura02
+      Engine: mysql
+      EngineVersion: "8.0.43"
+      DBInstanceClass: db.t3.micro
+      AllocatedStorage: 20
+      MasterUsername: admin
+      MasterUserPassword: !Ref DBPassword
+      DBSubnetGroupName: !Ref RDSSubnetGroup
+      DBParameterGroupName: !Ref RDSParamGroupTriggers
+      VPCSecurityGroups:
+        - !Ref RDSSG
+      PubliclyAccessible: false
+      MultiAZ: false
+      DeletionProtection: false
