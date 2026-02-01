@@ -82,12 +82,26 @@ Como administrador del sistema, implementé las siguientes mejoras de seguridad 
 - **Base de Datos Robusta:** Uso de **Triggers** para el archivado automático de registros (`_archivadas`), garantizando la integridad de los datos históricos.
 
 ---
-## Análisis de Costes (FinOps)
-El proyecto ha sido diseñado para operar dentro del **AWS Free Tier** durante la fase de desarrollo. 
-- **Right-sizing:** Uso de instancias de la familia `t3` (arquitectura Nitro).
-- **Monitorizacion: Monitorizacion mediante ClodWatch
-- **Políticas de S3:** Ciclo de vida para transicionar backups antiguos a *Glacier* y minimizar costes de almacenamiento persistente.
-- **Optimizacion de costes: Para consultar el análisis financiero detallado <a href="Reto_G2_Costes.pdf"> <img src="https://img.shields.io/badge/click_aquí-abrir_presupuesto_pdf-ff9900?style=for-the-badge&logo=adobe-acrobat-reader&logoColor=white" alt="Presupuesto PDF"> </a>
+##  Infraestructura como código (CloudFormation)
+
+La arquitectura se ha automatizado íntegramente mediante cloudformation para asegurar un despliegue replicable y eficiente, eliminando errores manuales en la configuración de red y datos. el proyecto se organiza en dos plantillas principales ubicadas en la carpeta de infraestructura:
+
+➡️ IaC_Script_VPC_EC2_RDS.yaml – gestiona la vpc dualstack y el aprovisionamiento de rds con soporte específico para triggers mysql.
+
+➡️ IaC_Script_VPC_EC2_WordPress.yaml – orquesta el despliegue de las instancias ec2 y la configuración del entorno para wordpress.
+---
+### Análisis de Costes (FinOps)
+
+El proyecto ha sido diseñado para operar dentro del **AWS Free Tier** durante la fase de desarrollo.
+
+* **Right-sizing:** Uso de instancias de la familia **t3** (arquitectura Nitro).
+* **Monitorización:** Supervisión constante mediante **CloudWatch**.
+* **Políticas de S3:** Ciclo de vida para transicionar backups antiguos a **Glacier** y minimizar costes de almacenamiento persistente.
+* **Optimización de costes:** Para consultar el análisis financiero detallado:
+
+➡️ <a href="Reto_G2_Costes.pdf">
+  <img src="https://img.shields.io/badge/CLICK_AQUÍ-ABRIR_PRESUPUESTO_PDF-ff9900?style=for-the-badge&logo=adobe-acrobat-reader&logoColor=white" alt="Presupuesto PDF">
+</a>
 
 
 Para consultar el análisis financiero detallado:
@@ -95,7 +109,7 @@ Para consultar el análisis financiero detallado:
 <a href="Reto_G2_Costes.pdf"> <img src="https://img.shields.io/badge/click_aquí-abrir_presupuesto_pdf-ff9900?style=for-the-badge&logo=adobe-acrobat-reader&logoColor=white" alt="Presupuesto PDF"> </a>
 ---
 
----
+------
 ##  Monitorización y alertas (cloudwatch)
 
   <img src="CloudWatch.png" alt="CloudWatch" width="650">
@@ -106,9 +120,10 @@ La alarma_cpu_70_academia se activa automáticamente si la utilización de la cp
 
 Comprobe su correcta funcionalidad con un estres de la CPU al 100% en la EC2
 
+---
 
 *Este proyecto forma parte del reto RetaCantabria 2025 - I.E.S. Alisal.*
 
----
+
 
 
