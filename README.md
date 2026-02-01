@@ -28,6 +28,11 @@ La solución se apoya íntegramente en los servicios de **Amazon Web Services (A
 
 ---
 
+El balanceo de carga se realiza mediante un ALB (Application Load Balancer) junto con:
+
+Auto Scaling Group
+Grupos de destino
+Sustitución automática de instancias en caso de fallo
 
 
 
