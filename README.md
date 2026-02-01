@@ -103,7 +103,6 @@ Para garantizar la estabilidad del sistema, he configurado una alarma en cloudwa
 La alarma_cpu_70_academia se activa automáticamente si la utilización de la cpu supera el 70 por ciento durante un intervalo de 5 minutos. este umbral actúa como el disparador para que el grupo de autoescalado añada servidores de forma dinámica, evitando la saturación de la web durante picos de tráfico.
 
 Comprobe su correcta funcionalidad con un estres de la CPU al 100% en la EC2
----
 
 
 *Este proyecto forma parte del reto RetaCantabria 2025 - I.E.S. Alisal.*
