@@ -35,7 +35,7 @@ Grupos de destino
 Sustitución automática de instancias en caso de fallo\
 
 
-![Interfaz de la Aplicación PHP - Academia de Pintura](docs/Reto_G2_AplicacionPHP.png)
+![Interfaz de la Aplicación PHP - Academia de Pintura](Reto_G2_AplicacionPHP.png)
 
 
 
