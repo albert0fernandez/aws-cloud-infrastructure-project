@@ -12,21 +12,16 @@ Este proyecto consiste en el diseño e implementación de una infraestructura en
 La solución se apoya íntegramente en los servicios de **Amazon Web Services (AWS)** para garantizar un entorno escalable y seguro.
 
 
-
-
-
-
-| Icono | Servicio AWS | Categoría | Función en el Proyecto |
-| :---: | :--- | :--- | :--- |
-| <img src="https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/master/dist/Networking/VPC.png" width="30"> | **VPC** | Networking | Segmentación de red con subredes públicas y privadas. |
-| <img src="https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/master/dist/Compute/EC2.png" width="30"> | **EC2** | Computación | Hosting de la aplicación PHP y WordPress (Glosario). |
-| <img src="https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/master/dist/Networking/ELBApplicationLoadBalancer.png" width="30"> | **ALB & ASG** | Escalabilidad | Balanceador de carga y auto-escalado para alta disponibilidad. |
-| <img src="https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/master/dist/Database/RDS.png" width="30"> | **RDS (MySQL)** | Base de Datos | Base de Datos relacional gestionada para la app principal. |
-| <img src="https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/master/dist/Storage/SimpleStorageService.png" width="30"> | **S3** | Almacenamiento | Destino de backups diarios automatizados vía cron. |
-| <img src="https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/master/dist/Compute/Lambda.png" width="30"> | **Lambda** | Automatización | Ejecución de código sin servidores para tareas programadas. |
-| <img src="https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/master/dist/ManagementGovernance/CloudFormation.png" width="30"> | **CloudFormation** | IaC | Despliegue automático de recursos mediante plantillas YAML. |
-| <img src="https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/master/dist/ApplicationIntegration/SimpleNotificationService.png" width="30"> | **SNS** | Mensajería | Servicio sencillo de notificaciones y alertas. |
-| <img src="https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/master/dist/ManagementGovernance/CloudWatch.png" width="30"> | **CloudWatch** | Monitorización | Monitorización y observabilidad de todo el sistema cloud. |
+Icono	Servicio AWS	Categoría	Función en el Proyecto
+<img src="https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/v18.0/dist/Networking/VPC.png" width="30">	VPC	Networking	Segmentación de red con subredes públicas y privadas.
+<img src="https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/v18.0/dist/Compute/EC2.png" width="30">	EC2	Computación	Hosting de la aplicación PHP y WordPress (Glosario).
+<img src="https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/v18.0/dist/Networking/ELBApplicationLoadBalancer.png" width="30">	ALB & ASG	Escalabilidad	Balanceador de carga y auto-escalado para alta disponibilidad.
+<img src="https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/v18.0/dist/Database/RDS.png" width="30">	RDS (MySQL)	Base de Datos	Base de Datos relacional gestionada para la app principal.
+<img src="https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/v18.0/dist/Storage/SimpleStorageService.png" width="30">	S3	Almacenamiento	Destino de backups diarios automatizados vía cron.
+<img src="https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/v18.0/dist/Compute/Lambda.png" width="30">	Lambda	Automatización	Ejecución de código sin servidores para tareas programadas.
+<img src="https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/v18.0/dist/ManagementGovernance/CloudFormation.png" width="30">	CloudFormation	IaC	Despliegue automático de recursos mediante plantillas YAML.
+<img src="https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/v18.0/dist/ApplicationIntegration/SimpleNotificationService.png" width="30">	SNS	Mensajería	Servicio sencillo de notificaciones y alertas.
+<img src="https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/v18.0/dist/ManagementGovernance/CloudWatch.png" width="30">	CloudWatch	Monitorización	Monitorización y observabilidad de todo el sistema cloud.
 
 El balanceo de carga se realiza mediante un ALB (Application Load Balancer) junto con:
 
