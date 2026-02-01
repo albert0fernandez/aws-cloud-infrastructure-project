@@ -32,7 +32,10 @@ El balanceo de carga se realiza mediante un ALB (Application Load Balancer) junt
 
 Auto Scaling Group
 Grupos de destino
-Sustitución automática de instancias en caso de fallo
+Sustitución automática de instancias en caso de fallo\
+
+
+![Interfaz de la Aplicación PHP - Academia de Pintura](docs/Reto_G2_AplicacionPHP.png)
 
 
 
