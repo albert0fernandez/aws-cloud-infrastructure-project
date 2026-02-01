@@ -59,11 +59,12 @@ No solo almacenamos datos, los gestionamos eficientemente:
     2. Envío cifrado a **S3**.
     3. Notificación **SNS** al administrador sobre el estado de la copia.
   
+  
 ## 🔐Automatización serverless (Lambda  SNS )
 
  
- <img src="lambda.png" alt="Lambda width="650"> 
-
+ <img src="assets/lambda.png" alt="Captura Lambda" width="650">
+ 
 Disparador (trigger): la función lambda se activa automáticamente cada vez que se detecta un nuevo archivo de backup en el bucket de s3.
 
 Lógica de notificación: el script de python procesa el evento y utiliza sns (simple notification service) para enviar una alerta inmediata al equipo de administración.
