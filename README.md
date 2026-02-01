@@ -27,11 +27,11 @@ Utilizando Infraestructura como Código (IaC) mediante CloudFormation, se ha orq
 
 La arquitectura de red sigue una segmentación estricta para proteger los recursos sensibles aqui esta mi estructura:
 
-Subredes públicas: en esta capa residen el balanceador de carga (alb) y los puntos de acceso a internet (igw), gestionando la entrada de tráfico de los usuarios.
+* Subredes públicas: en esta capa residen el balanceador de carga (alb) y los puntos de acceso a internet (igw), gestionando la entrada de tráfico de los usuarios.
 
-Subredes privadas: es el entorno seguro donde se alojan las instancias ec2 y la base de datos rds, quedando totalmente aisladas del acceso directo desde internet.
+* Subredes privadas: es el entorno seguro donde se alojan las instancias ec2 y la base de datos rds, quedando totalmente aisladas del acceso directo desde internet.
 
-Security groups: he configurado reglas de cortafuegos a medida para permitir únicamente el tráfico necesario, abriendo los puertos 80 y 443 para la navegación web y el puerto 3306 para las comunicaciones internas de la base de datos mysql.
+* Security groups: he configurado reglas de cortafuegos a medida para permitir únicamente el tráfico necesario, abriendo los puertos 80 y 443 para la navegación web y el puerto 3306 para las comunicaciones internas de la base de datos mysql.
 
 <table align="center">
   <tr>
@@ -65,11 +65,11 @@ No solo almacenamos datos, los gestionamos eficientemente:
  
  <img src="/lambda.png" alt="Captura Lambda" width="650">
  
-Disparador (trigger): la función lambda se activa automáticamente cada vez que se detecta un nuevo archivo de backup en el bucket de s3.
+* Disparador (trigger): la función lambda se activa automáticamente cada vez que se detecta un nuevo archivo de backup en el bucket de s3.
 
-Lógica de notificación: el script de python procesa el evento y utiliza sns (simple notification service) para enviar una alerta inmediata al equipo de administración.
+* Lógica de notificación: el script de python procesa el evento y utiliza sns (simple notification service) para enviar una alerta inmediata al equipo de administración.
 
-ventaja técnica: este modelo elimina la necesidad de tener un servidor encendido solo para vigilar los backups, reduciendo costes y mejorando la eficiencia del sistema.
+* Ventaja técnica: este modelo elimina la necesidad de tener un servidor encendido solo para vigilar los backups, reduciendo costes y mejorando la eficiencia del sistema.
 
 <img src="/notification.png" alt="Captura Lambda" width="650">
 
@@ -86,7 +86,7 @@ Como administrador del sistema, implementé las siguientes mejoras de seguridad 
 
 La arquitectura se ha automatizado íntegramente mediante cloudformation para asegurar un despliegue replicable y eficiente, eliminando errores manuales en la configuración de red y datos. el proyecto se organiza en dos plantillas principales ubicadas en la carpeta de infraestructura:
 
-**➡️ [IaC_Script_VPC_EC2_RDS.yaml](Infrastructure%20as%20Code/IaC_Script_VPC_EC2_RDS.yaml)**: gestiona la **VPC dualstack** y el aprovisionamiento de **RDS** con soporte específico para **triggers MySQL**.
+* **➡️ [IaC_Script_VPC_EC2_RDS.yaml](Infrastructure%20as%20Code/IaC_Script_VPC_EC2_RDS.yaml)**: gestiona la **VPC dualstack** y el aprovisionamiento de **RDS** con soporte específico para **triggers MySQL**.
 * **➡️ [IaC_Script_VPC_EC2_WordPress.yaml](Infrastructure%20as%20Code/IaC_Script_VPC_EC2_WordPress.yaml)**: orquesta el despliegue de las instancias **EC2** y la configuración del entorno para **WordPress**.
 ---
 ### Análisis de Costes (FinOps)
