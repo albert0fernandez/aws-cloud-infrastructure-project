@@ -10,6 +10,7 @@
 Este proyecto nace bajo el marco del reto RetaCantabria 2025, con el objetivo de diseñar y desplegar una infraestructura Cloud robusta para una Academia de Pintura. La solución no es simplemente una migración al buscador, sino una arquitectura diseñada bajo los principios de Alta Disponibilidad, Escalabilidad y Seguridad Perimetral.
 
 Utilizando Infraestructura como Código (IaC) mediante CloudFormation, se ha orquestado un entorno DualStack (IPv4/IPv6) que integra servicios de computación elástica (EC2/ASG), bases de datos gestionadas (RDS con soporte para Triggers) y una capa de automatización Serverless (Lambda/SNS) para la gestión inteligente de backups.
+---
 
 ## 🏗️ Recursos de AWS Utilizados 
 
@@ -32,6 +33,7 @@ La arquitectura de red sigue una segmentación estricta para proteger los recurs
 * Subredes privadas: es el entorno seguro donde se alojan las instancias ec2 y la base de datos rds, quedando totalmente aisladas del acceso directo desde internet.
 
 * Security groups: he configurado reglas de cortafuegos a medida para permitir únicamente el tráfico necesario, abriendo los puertos 80 y 443 para la navegación web y el puerto 3306 para las comunicaciones internas de la base de datos mysql.
+---
 
 <table align="center">
   <tr>
@@ -47,6 +49,7 @@ La arquitectura de red sigue una segmentación estricta para proteger los recurs
     </td>
   </tr>
 </table>
+---
 
 ## Base de datos gestionada (RDS)
 
@@ -59,6 +62,7 @@ No solo almacenamos datos, los gestionamos eficientemente:
     2. Envío cifrado a **S3**.
     3. Notificación **SNS** al administrador sobre el estado de la copia.
   
+  ---
   
 ## Automatización serverless (Lambda  SNS )
 
