@@ -1,0 +1,213 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: VPC DualStack (IPv4 + IPv6) con EC2 WordPress en subred publica y EC2 BBDD en subred privada
+
+Parameters:
+  KeyPairName:
+    Type: AWS::EC2::KeyPair::KeyName
+    Description: KeyPair para acceso SSH
+
+Resources:
+
+  # Creacion de la VPC con IPv4
+  VPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.40.0.0/16
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      Tags:
+      - Key: Name
+        Value: VPCWordPress
+
+  # Bloque IPv6 asignado a la VPC
+  IPv6Block:
+    Type: AWS::EC2::VPCCidrBlock
+    Properties:
+      VpcId: !Ref VPC
+      AmazonProvidedIpv6CidrBlock: true
+  
+  # Internet Gateway creado y asignado despues
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+
+  IGWAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref VPC
+      InternetGatewayId: !Ref InternetGateway
+
+  # EIGW creado y asignado
+  EgressOnlyIGW:
+    Type: AWS::EC2::EgressOnlyInternetGateway
+    Properties:
+      VpcId: !Ref VPC
+
+    # Subred publica creada con rangos /24 especificos
+  PublicSubnet:
+    Type: AWS::EC2::Subnet
+    DependsOn: IPv6Block
+    Properties:
+      VpcId: !Ref VPC
+      CidrBlock: 10.40.102.0/24
+      AssignIpv6AddressOnCreation: true
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: VPCWordPress-SubredPublica
+      Ipv6CidrBlock: !Select [0, !Cidr [!Select [0, !GetAtt VPC.Ipv6CidrBlocks], 256, 64]]
+
+  # Subred privada creada con rangos especificos
+  PrivateSubnet:
+    Type: AWS::EC2::Subnet
+    DependsOn: IPv6Block
+    Properties:
+      VpcId: !Ref VPC
+      CidrBlock: 10.40.122.0/24
+      AssignIpv6AddressOnCreation: true
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: Name
+          Value: VPCWordPress-SubredPrivada
+      Ipv6CidrBlock: !Select [1, !Cidr [!Select [0, !GetAtt VPC.Ipv6CidrBlocks], 256, 64]]
+
+  # Creacion de tabla de rutas publica
+  PublicRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC
+
+  PublicRouteIPv4:
+    Type: AWS::EC2::Route
+    DependsOn: IGWAttachment
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway
+
+  PublicRouteIPv6:
+    Type: AWS::EC2::Route
+    DependsOn: IGWAttachment
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      DestinationIpv6CidrBlock: ::/0
+      GatewayId: !Ref InternetGateway
+
+  PublicSubnetRouteAssoc:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnet
+      RouteTableId: !Ref PublicRouteTable
+
+  # Creacionde tabla de rutas privada
+  PrivateRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC
+
+  PrivateSubnetRouteAssoc:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PrivateSubnet
+      RouteTableId: !Ref PrivateRouteTable
+
+  PrivateIPv6Route:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref PrivateRouteTable
+      DestinationIpv6CidrBlock: ::/0
+      EgressOnlyInternetGatewayId: !Ref EgressOnlyIGW
+
+  # Grupo de seguridad creado para la instancia de Apache
+  PublicSG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      VpcId: !Ref VPC
+      GroupDescription: SSH HTTP HTTPS
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIpv6: ::/0
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIpv6: ::/0
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIpv6: ::/0
+
+  # Grupo de seguridad creado para la instancia de base de datos
+  PrivateSG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      VpcId: !Ref VPC
+      GroupDescription: MySQL solo desde EC2 publica
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 3306
+          ToPort: 3306
+          SourceSecurityGroupId: !Ref PublicSG
+
+  # Instancia EC2 publica creada
+  PublicEC2:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t2.micro
+      ImageId: ami-0ecb62995f68bb549
+      KeyName: !Ref KeyPairName
+      SubnetId: !Ref PublicSubnet
+      SecurityGroupIds:
+        - !Ref PublicSG
+      UserData:
+        Fn::Base64: |
+          #!/bin/bash
+          apt update -y
+          apt upgrade -y
+          apt install -y apache2 php php-mysql libapache2-mod-php
+          systemctl enable apache2
+          systemctl start apache2
+
+  # IP eLastica creada para enlazar con nombre de dominio
+  PublicEIP:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+
+  # Asociacion de la IP elastica a la instancia EC2 publica
+  EIPAssociation:
+    Type: AWS::EC2::EIPAssociation
+    Properties:
+      InstanceId: !Ref PublicEC2
+      EIP: !Ref PublicEIP
+
+  # Creacion de la instancia EC2 privada para BBDD
+  PrivateEC2:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t2.micro
+      ImageId: ami-0ecb62995f68bb549
+      KeyName: !Ref KeyPairName
+      SubnetId: !Ref PrivateSubnet
+      SecurityGroupIds:
+        - !Ref PrivateSG
+      UserData:
+        Fn::Base64: |
+          #!/bin/bash
+          apt update -y
+          apt upgrade -y
+          apt install -y mysql-server php php-mysql
+          systemctl enable mysql
+          systemctl start mysql
